@@ -1,17 +1,38 @@
 import React, { Component } from "react";
+import data from "./dataGlasses.json";
+import GlassList from "./GlassList";
 
 export default class Main extends Component {
    constructor() {
       super();
 
       this.state = {
-         imgUrl: '/img/v1.png',
+         imgUrl: null,
+         selectedGlass: null,
+         displayInfo: false,
       };
    }
 
-   changeGlass = (code) => {
-      const imgUrl = `/img/${code}.png`;
+   handleChangeGlass = (glass) => {
+      const imgUrl = glass.url;
       this.setState({ imgUrl });
+   };
+
+   handleSelect = (glass) => {
+      console.log(glass);
+      this.setState({ selectedGlass: glass, displayInfo: true });
+   };
+
+   renderInfoGlass = () => {
+      if (this.state.selectedGlass) {
+         return (
+            <div>
+               <h1 className="text-center">{this.state.selectedGlass.name}</h1>
+               <p>Price: {this.state.selectedGlass.price}$</p>
+               <p>{this.state.selectedGlass.desc}</p>
+            </div>
+         );
+      }
    };
 
    render() {
@@ -25,7 +46,7 @@ export default class Main extends Component {
             <div className="row mt-5">
                <div className="col-sm-12">
                   <div className="row">
-                     <div className="col-sm-6 position-relative">
+                     <div className="col-sm-4 position-relative">
                         <img
                            src="/img/model.jpg"
                            alt="model"
@@ -33,14 +54,17 @@ export default class Main extends Component {
                            height="400px"
                         />
                         <img
-                           className="img position-absolute"
+                           className="img position-absolute img-glass"
                            src={this.state.imgUrl}
                            width="170px"
                            height="80px"
                            alt=""
                         />
                      </div>
-                     <div className="col-sm-6">
+
+                     <div className="col-sm-4">{this.renderInfoGlass()}</div>
+
+                     <div className="col-sm-4">
                         <img
                            src="/img/model.jpg"
                            alt="model"
@@ -51,95 +75,11 @@ export default class Main extends Component {
                   </div>
                </div>
                <div className="col-sm-12 mt-5">
-                  <div className="w-75 row mx-auto py-3 bg-secondary">
-                     <div className="col">
-                        <img
-                           src="/img/g1.jpg"
-                           alt=""
-                           width="50px"
-                           height="35px"
-													 onClick={() => this.changeGlass('v1')}
-                        />
-                     </div>
-                     <div className="col">
-                        <img
-                           src="/img/g2.jpg"
-                           alt=""
-                           width="50px"
-                           height="35px"
-													 onClick={() => this.changeGlass('v2')}
-                        />
-                     </div>
-                     <div className="col">
-                        <img
-                           src="/img/g3.jpg"
-                           alt=""
-                           width="50px"
-                           height="35px"
-													 onClick={() => this.changeGlass('v3')}
-                        />
-                     </div>
-                     <div className="col">
-                        <img
-                           src="/img/g4.jpg"
-                           alt=""
-                           width="50px"
-                           height="35px"
-													 onClick={() => this.changeGlass('v4')}
-
-                        />
-                     </div>
-                     <div className="col">
-                        <img
-                           src="/img/g5.jpg"
-                           alt=""
-                           width="50px"
-                           height="35px"
-													 onClick={() => this.changeGlass('v5')}
-
-                        />
-                     </div>
-                     <div className="col">
-                        <img
-                           src="/img/g6.jpg"
-                           alt=""
-                           width="50px"
-                           height="35px"
-													 onClick={() => this.changeGlass('v6')}
-
-                        />
-                     </div>
-                     <div className="col">
-                        <img
-                           src="/img/g7.jpg"
-                           alt=""
-                           width="50px"
-                           height="35px"
-													 onClick={() => this.changeGlass('v7')}
-
-                        />
-                     </div>
-                     <div className="col">
-                        <img
-                           src="/img/g8.jpg"
-                           alt=""
-                           width="50px"
-                           height="35px"
-													 onClick={() => this.changeGlass('v8')}
-
-                        />
-                     </div>
-                     <div className="col">
-                        <img
-                           src="/img/g9.jpg"
-                           alt=""
-                           width="50px"
-                           height="35px"
-													 onClick={() => this.changeGlass('v9')}
-
-                        />
-                     </div>
-                  </div>
+                  <GlassList
+                     glasses={data}
+                     onChange={this.handleChangeGlass}
+                     onSelect={this.handleSelect}
+                  />
                </div>
             </div>
          </div>
